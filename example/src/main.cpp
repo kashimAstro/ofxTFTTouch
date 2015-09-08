@@ -20,18 +20,21 @@ class ofApp : public ofBaseApp{
 		Tx=touch.getCoordTouch().x;
 		Ty=touch.getCoordTouch().y;
 		Tp=touch.getCoordTouch().z;
-
 		p ="X:"+ofToString(Tx)+" Y:"+ofToString(Ty)+" Pressur:"+ofToString(Tp);
 	}
 
 	void draw(){
 		ofBackground(ofColor(10,45,110));
 		ofDrawBitmapStringHighlight(p,ofPoint(20,20),ofColor(0),ofColor(255));
+
+		ofPushStyle();
 		ofSetColor(255,0,0);
 		ofFill();
 		ofCircle(Tx,Ty,Tp/4,Tp/4);
-		ofColor(255);
+		ofPopStyle();
+
 		ofNoFill();
+		ofColor(255,255,255);
 		ofCircle(Tx,Ty,Tp/3,Tp/3);
 		fbcp.Copy();
 	}

@@ -44,7 +44,6 @@ class ofxTFTTouch{
 	}
 
 	ofPoint pos;
-
 	ofPoint getCoordTouch(){
         	const size_t ev_size = sizeof(struct input_event);
 	        ssize_t size;
