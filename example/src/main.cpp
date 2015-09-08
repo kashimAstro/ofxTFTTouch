@@ -6,6 +6,7 @@ class ofApp : public ofBaseApp{
 	public:
 	ofxTFTTouch touch;
 	int w,h;
+	int Tx,Ty,Tp;
 	string p;
 
 	void setup(){
@@ -16,11 +17,22 @@ class ofApp : public ofBaseApp{
 	}
 
 	void update(){
-		p ="X:"+ofToString(touch.getCoordTouch().x)+" Y:"+ofToString(touch.getCoordTouch().y)+" Pressur:"+ofToString(touch.getCoordTouch().z);
+		Tx=touch.getCoordTouch().x;
+		Ty=touch.getCoordTouch().y;
+		Tp=touch.getCoordTouch().z;
+
+		p ="X:"+ofToString(Tx)+" Y:"+ofToString(Ty)+" Pressur:"+ofToString(Tp);
 	}
 
 	void draw(){
+		ofBackground(ofColor(10,45,110));
 		ofDrawBitmapStringHighlight(p,ofPoint(20,20),ofColor(0),ofColor(255));
+		ofSetColor(255,0,0);
+		ofFill();
+		ofCircle(Tx,Ty,Tp/4,Tp/4);
+		ofColor(255);
+		ofNoFill();
+		ofCircle(Tx,Ty,Tp/3,Tp/3);
 		fbcp.Copy();
 	}
 	/* */

@@ -17,7 +17,7 @@ class ofxTFTTouch{
 	int _resX,_resY;
         int x,y,pressur;
 
-	int init(char * d, int w, int h, int valEvX=4095, int valEvY=4095){
+	int init(char * d, int w, int h, int valEvX=4095, int valEvY=4095){// for valEvX and valEvY check value Min Max evtest /dev/input/event0
 		size = sizeof (struct input_event);
 		name[0]='U';
 		name[1]='n';
@@ -43,21 +43,22 @@ class ofxTFTTouch{
 		return str;
 	}
 
+	ofPoint pos;
+
 	ofPoint getCoordTouch(){
         	const size_t ev_size = sizeof(struct input_event);
 	        ssize_t size;
-		ofPoint pos;
 	        size = read(fd, &ev, ev_size);
 	        if (size < ev_size) {
         	    ofLog()<<"Error size!\n";
 	        }
 	        if (ev.type == EVENT_TYPE && (ev.code == EVENT_CODE_X || ev.code == EVENT_CODE_Y || ev.code == EVENT_CODE_P)) {
 		    if(ev.code == EVENT_CODE_X)
-			x=ofMap(ev.value, 0,_pX,0,_resX);
+			x = ofMap(ev.value, 0,_pX,0,_resX);
 		    if(ev.code == EVENT_CODE_Y)
-			y=ofMap(ev.value, 0,_pY,0,_resY);
+			y = ofMap(ev.value, 0,_pY,0,_resY);
 		    if(ev.code == EVENT_CODE_P)
-			pressur=ev.value;
+			pressur = ev.value;
 		    pos.set(x,y,pressur);
 	        }
 		return pos;
