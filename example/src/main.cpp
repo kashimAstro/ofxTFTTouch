@@ -6,6 +6,7 @@ class ofApp : public ofBaseApp{
 	public:
 	ofxTFTTouch touch;
 	int w,h;
+	string p;
 
 	void setup(){
 		w=ofGetScreenWidth();
@@ -15,11 +16,10 @@ class ofApp : public ofBaseApp{
 	}
 
 	void update(){
-
+		p ="X:"+ofToString(touch.getCoordTouch().x)+" Y:"+ofToString(touch.getCoordTouch().y)+" Pressur:"+ofToString(touch.getCoordTouch().z);
 	}
 
 	void draw(){
-		string p ="X:"+ofToString(touch.getCoordTouch().x)+" Y:"+ofToString(touch.getCoordTouch().y)+" Pressur:"+ofToString(touch.getCoordTouch().z);
 		ofDrawBitmapStringHighlight(p,ofPoint(20,20),ofColor(0),ofColor(255));
 		fbcp.Copy();
 	}

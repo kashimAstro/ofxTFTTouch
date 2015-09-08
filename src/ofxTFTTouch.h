@@ -10,11 +10,12 @@ class ofxTFTTouch{
 	public:
 
   	struct input_event ev;
-	int fd, rd, value, size;
+	int fd, size;
 	char name[256];
 	char *device;
 	int _pX, _pY;
 	int _resX,_resY;
+        int x,y,pressur;
 
 	int init(char * d, int w, int h, int valEvX=4095, int valEvY=4095){
 		size = sizeof (struct input_event);
@@ -46,7 +47,6 @@ class ofxTFTTouch{
         	const size_t ev_size = sizeof(struct input_event);
 	        ssize_t size;
 		ofPoint pos;
-		int x,y,pressur;
 	        size = read(fd, &ev, ev_size);
 	        if (size < ev_size) {
         	    ofLog()<<"Error size!\n";
