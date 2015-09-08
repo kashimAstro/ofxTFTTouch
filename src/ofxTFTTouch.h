@@ -1,5 +1,11 @@
 #include "ofMain.h"
 #include <linux/input.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <stdio.h>
+#include <syslog.h>
+#include <fcntl.h>
+
 
 #define EVENT_TYPE      EV_ABS
 #define EVENT_CODE_X    ABS_X
