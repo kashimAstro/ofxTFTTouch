@@ -8,25 +8,38 @@ class ofApp : public ofBaseApp{
 	int w,h;
 	int Tx,Ty,Tp;
 	string p;
+	ofFbo fbo;
 
 	void setup(){
 		w=ofGetScreenWidth();
 		h=ofGetScreenHeight();
 		touch.init("/dev/input/event0",w,h);
 		ofLog()<<touch.getName();
+		fbo.allocate(w,h);
+	}
+
+	void exit(){
+		touch.exit();
 	}
 
 	void update(){
 		Tx=touch.getCoordTouch().x;
 		Ty=touch.getCoordTouch().y;
 		Tp=touch.getCoordTouch().z;
-		p ="X:"+ofToString(Tx)+" Y:"+ofToString(Ty)+" Pressur:"+ofToString(Tp);
+		p ="X:"+ofToString(Tx)+" Y:"+ofToString(Ty)+" Pressur:"+ofToString(Tp)+" FPS:"+ofToString(ofGetFrameRate());
 	}
 
 	void draw(){
 		ofBackground(ofColor(10,45,110));
 		ofDrawBitmapStringHighlight(p,ofPoint(20,20),ofColor(0),ofColor(255));
-
+		fbo.begin();
+		if(Tx < 70 && Ty < 70)
+			ofClear(0,0,0,0);
+		ofSetColor(255);
+		ofCircle(Tx,Ty,Tp/6,Tp/6);
+		fbo.end();
+		fbo.draw(0,0);
+		/*
 		ofPushStyle();
 		ofSetColor(255,0,0);
 		ofFill();
@@ -36,6 +49,7 @@ class ofApp : public ofBaseApp{
 		ofNoFill();
 		ofColor(255,255,255);
 		ofCircle(Tx,Ty,Tp/3,Tp/3);
+		*/
 		fbcp.Copy();
 	}
 	/* */
