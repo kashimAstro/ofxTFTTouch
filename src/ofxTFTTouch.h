@@ -6,7 +6,7 @@
 #define EVENT_CODE_Y    ABS_Y
 #define EVENT_CODE_P    ABS_PRESSURE
 
-class ofxTFTTouch{
+class ofxTFTTouch : public ofThread {
 	public:
 
   	struct input_event ev;
@@ -35,6 +35,7 @@ class ofxTFTTouch{
 		_resY=h;
 		_pX=valEvX;
 		_pY=valEvY;
+		startThread();
 	}
 
 	string getName(){
@@ -43,23 +44,32 @@ class ofxTFTTouch{
 		return str;
 	}
 
-	ofPoint pos;
-	ofPoint getCoordTouch(){
-        	const size_t ev_size = sizeof(struct input_event);
-	        ssize_t size;
-	        size = read(fd, &ev, ev_size);
-	        if (size < ev_size) {
-        	    ofLog()<<"Error size!\n";
-	        }
-	        if (ev.type == EVENT_TYPE && (ev.code == EVENT_CODE_X || ev.code == EVENT_CODE_Y || ev.code == EVENT_CODE_P)) {
-		    if(ev.code == EVENT_CODE_X)
-			x = ofMap(ev.value, 0,_pX,0,_resX);
-		    if(ev.code == EVENT_CODE_Y)
-			y = ofMap(ev.value, 0,_pY,0,_resY);
-		    if(ev.code == EVENT_CODE_P)
-			pressur = ev.value;
-		    pos.set(x,y,pressur);
-	        }
+	void exit(){
+		stopThread();
+	}
+
+	void threadedFunction(){
+		while(isThreadRunning()) {
+	        	const size_t ev_size = sizeof(struct input_event);
+		        ssize_t size;
+		        size = read(fd, &ev, ev_size);
+		        if (size < ev_size) {
+	        	    ofLog()<<"Error size!\n";
+		        }
+		        if (ev.type == EVENT_TYPE && (ev.code == EVENT_CODE_X || ev.code == EVENT_CODE_Y || ev.code == EVENT_CODE_P)) {
+			    if(ev.code == EVENT_CODE_X)
+				x = ofMap(ev.value, 0,_pX,0,_resX);
+			    if(ev.code == EVENT_CODE_Y)
+				y = ofMap(ev.value, 0,_pY,0,_resY);
+			    if(ev.code == EVENT_CODE_P)
+				pressur = ev.value;
+			    pos.set(x,y,pressur);
+		        }
+		}
+	}
+
+	ofVec3f pos;
+	ofVec3f getCoordTouch(){
 		return pos;
 	}
 };
